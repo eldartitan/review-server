@@ -29,7 +29,7 @@ app.use(
         SECRET,
         resave: false,
         saveUninitialized: true,
-        store: MongoStore.create({MONGO_URL,collectionName: "sessions"}),
+        store: MongoStore.create({mongoUrl: MONGO_URL, collectionName: "sessions"}),
         cookie: {maxAge: 1000 * 60 * 60 * 24},
     })
 );
