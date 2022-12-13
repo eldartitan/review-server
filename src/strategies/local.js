@@ -6,7 +6,7 @@ const User = require('../database/schemas/User')
 passport.use(new LocalStrategy(
     (username, password, done) => {
         console.log("login")
-        const user = User.findOne({ username }, function (err, user) {
+        User.findOne({ username }, function (err, user) {
             if (err) { return done(err); } //When some error occurs
             if (!user) {  //When username is invalid
                 return done(null, false, { message: 'Incorrect username.' });

@@ -6,13 +6,16 @@ const MongoStore = require('connect-mongo');
 
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
+const authGoogleRoute = require("./routes/authGoogle");
+const authDiscordRoute = require("./routes/authDiscord");
 const reviewRoute = require("./routes/review");
 const commentRoute = require("./routes/comment");
 const otherRoute = require("./routes/other");
 const adminRoute = require("./routes/admin");
 
 require("./database");
-require("./strategies/googleAuth");
+require("./strategies/google");
+require("./strategies/discord");
 require("./strategies/local");
 require("dotenv").config();
 
@@ -41,7 +44,8 @@ function isLoggedIn(req, res, next) {
 }
 
 app.get("/", (req, res) => {
-    res.send('<a href="auth/google">Authenticate with Google</a>');
+    res.send('<a href="auth/google">Authenticate with Google</a><br/>' +
+        '<a href="auth/discord">Authenticate with Discord</a><br/>');
     console.log("main page");
     console.log(req.user);
 });
@@ -52,6 +56,8 @@ app.get("/protected", isLoggedIn, (req, res) => {
 });
 
 app.use("/auth", authRoute);
+app.use("/auth/google", authGoogleRoute);
+app.use("/auth/discord", authDiscordRoute);
 app.use("/api/user", userRoute);
 app.use("/api/review", reviewRoute);
 app.use("/api/comment", commentRoute);

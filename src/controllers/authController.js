@@ -4,10 +4,6 @@ const Role = require("../database/schemas/Role");
 const User = require("../database/schemas/User");
 
 class authController {
-    async googleFailure(req, res) {
-        res.send("Failed to authenticate...");
-    }
-
     async logout(req, res) {
         req.logout();
         req.session.destroy();

@@ -11,7 +11,6 @@ const UserSchema = new mongoose.Schema({
     password: {type: mongoose.SchemaTypes.String},
     googleId: {type: mongoose.SchemaTypes.String},
     discordId: {type: mongoose.SchemaTypes.String},
-    photos: [{type: mongoose.SchemaTypes.String}],
     product: [{
         rating: {
             type: mongoose.SchemaTypes.Number,
