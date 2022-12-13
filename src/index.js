@@ -42,6 +42,7 @@ function isLoggedIn(req, res, next) {
 
 app.get("/", (req, res) => {
     res.send('<a href="auth/google">Authenticate with Google</a>');
+    console.log("main page");
     console.log(req.user);
 });
 app.get("/protected", isLoggedIn, (req, res) => {
