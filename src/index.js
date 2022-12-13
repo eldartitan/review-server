@@ -18,18 +18,18 @@ require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const SECRET = process.env.SECRET;
-const MONGO_URL = process.env.MONGO_URL;
 const CLIENT_URL = process.env.CLIENT_URL;
+const mongoUrl = process.env.MONGO_URL;
+const secret = process.env.SECRET;
 
 app.use(express.json());
 app.use(cors({origin: CLIENT_URL, credentials: true}));
 app.use(
     session({
-        SECRET,
+        secret,
         resave: false,
         saveUninitialized: true,
-        store: MongoStore.create({mongoUrl: MONGO_URL, collectionName: "sessions"}),
+        store: MongoStore.create({mongoUrl, collectionName: "sessions"}),
         cookie: {maxAge: 1000 * 60 * 60 * 24},
     })
 );
