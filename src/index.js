@@ -21,7 +21,6 @@ const PORT = process.env.PORT || 3001;
 const CLIENT_URL = process.env.CLIENT_URL;
 const mongoUrl = process.env.MONGO_URL;
 const secret = process.env.SECRET;
-console.log(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET)
 
 app.use(express.json());
 app.use(cors({origin: CLIENT_URL, credentials: true}));
