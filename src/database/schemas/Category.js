@@ -1,7 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const CategorySchema = new mongoose.Schema({
-  name: {
+  value: {
+    type: mongoose.SchemaTypes.String,
+    required: true,
+  },
+  lang: {
     type: mongoose.SchemaTypes.String,
     required: true,
   },
@@ -12,4 +16,4 @@ const CategorySchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('categories', CategorySchema);
+module.exports = mongoose.model("categories", CategorySchema);

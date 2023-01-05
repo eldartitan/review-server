@@ -1,11 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const TagSchema = new mongoose.Schema({
-  name: {
+  value: {
     type: mongoose.SchemaTypes.String,
     required: true,
     unique: true,
   },
+  reviews: [
+    {
+      type: mongoose.SchemaTypes.String,
+    },
+  ],
   createdAt: {
     type: mongoose.SchemaTypes.Date,
     required: true,
@@ -13,4 +18,4 @@ const TagSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('tags', TagSchema);
+module.exports = mongoose.model("tags", TagSchema);
