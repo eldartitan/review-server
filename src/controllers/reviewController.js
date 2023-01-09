@@ -7,20 +7,20 @@ const Category = require("../database/schemas/Category");
 class reviewController {
   async get(req, res, next) {
     try {
-      const { id, params, tags, category, text } = req.query;
-      console.log("ID", id, params, tags, category, text);
+      const { id, params, tags, category, text, user_id } = req.query;
+      console.log("ID", id, params, tags, category, text, user_id);
       const catDb = await Category.findOne({ value: category });
       let reviewDb;
 
       if (id) reviewDb = await Review.findOne({ _id: id });
-      else if (text) {
-        console.log(text, "TEXT");
+      else if (user_id) reviewDb = await Review.find({ user_id }).limit(10);
+      else if (text)
         reviewDb = await Review.find({ $text: { $search: text } }).limit(10);
-      } else if (tags) reviewDb = await Review.find({ tags });
-      else if (params) reviewDb = await Review.find().sort(params);
+      else if (tags) reviewDb = await Review.find({ tags }).limit(10);
+      else if (params) reviewDb = await Review.find().sort(params).limit(10);
       else if (category) {
         const catDb = await Category.findOne({ value: category });
-        reviewDb = await Review.find({ category: catDb.id });
+        reviewDb = await Review.find({ category: catDb.id }).limit(10);
       } else reviewDb = await Review.find().limit(10);
 
       // console.log(reviewDb);
@@ -83,34 +83,20 @@ class reviewController {
     try {
       console.log("update review");
       const { id } = req.query;
-      const {
-        product,
-        title,
-        text,
-        user_rating,
-        category,
-        images,
-        tag,
-        likes,
-        dislikes,
-      } = req.body;
-      await Review.updateOne(
-        { id },
+      const { title, text, user_rating, images, tag } = req.body;
+      const reviewDb = await Review.updateOne(
+        { _id: id },
         {
           $set: {
-            product,
             title,
             text,
             user_rating,
-            category,
             images,
             tag,
-            likes,
-            dislikes,
           },
         }
       );
-      res.send(200);
+      res.status(200).send(reviewDb);
     } catch (err) {
       console.error(`Error while updating review`, err.message);
       next(err);
