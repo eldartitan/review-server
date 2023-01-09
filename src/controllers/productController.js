@@ -7,7 +7,7 @@ class productController {
       const { id } = req.params;
       const product = await Product.findOne({ _id: id });
       console.log(product, id);
-      const avg = average(product.rating.map((m) => m.value));
+      const avg = average(product.rating.map((m) => Number(m.value)));
       res.status(200).send({
         id: product.id,
         value: product.value,
@@ -35,7 +35,8 @@ class productController {
       const { product_id, user_id, value } = req.body;
       const prod = await Product.findOne({ _id: product_id });
       const filtered = prod.rating.filter((f) => f.user_id === user_id);
-      if (filtered.length < 1) {
+
+      if (!filtered.length) {
         await Product.update(
           { _id: product_id },
           { $push: { rating: { user_id, value } } }
@@ -46,7 +47,17 @@ class productController {
           { $set: { "rating.$.value": value } }
         );
       }
-      res.send(prod);
+      const product = await Product.findOne({ _id: product_id });
+      console.log(product);
+      const avg = average(product.rating.map((m) => Number(m.value)));
+      res.status(200).send({
+        id: product.id,
+        value: product.value,
+        rating_avg: avg,
+        rating: product.rating,
+      });
+
+      // res.send(prod);
     } catch (err) {
       console.error(`Error while updating`, err.message);
       next(err);
