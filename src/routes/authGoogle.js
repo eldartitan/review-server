@@ -5,17 +5,16 @@ const router = Router();
 require("dotenv").config();
 const CLIENT_URL = process.env.CLIENT_URL;
 
-router.get(
-  "/",
-  passport.authenticate("google", { scope: ["email", "profile"] })
-);
+router.get("/", passport.authenticate("google", { scope: ["profile"] }));
 router.get(
   "/callback",
   passport.authenticate("google", {
     successRedirect: CLIENT_URL,
     failureRedirect: "/failure",
+    session: true,
   })
 );
+
 router.get("/failure", (req, res) => {
   res.status(400).send("Fail authenticate with google");
 });

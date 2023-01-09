@@ -4,11 +4,21 @@ const Category = require("../database/schemas/Category");
 class OtherController {
   async getTags(req, res, next) {
     try {
-      const tags = await Tag.find().sort({ _id: -1 }).limit(10);
-      // console.log(tags);
-      // tags.sort((a, b) => {
-      //   return b.reviews.length - a.reviews.length;
-      // });
+      const tags = await Tag.aggregate([
+        {
+          $addFields: {
+            subscribedGroupsLength: {
+              $size: "$reviews",
+            },
+          },
+        },
+        {
+          $sort: {
+            subscribedGroupsLength: -1,
+          },
+        },
+      ]).limit(10);
+
       res.send(tags);
     } catch (err) {
       console.error(`Error while getting tags`, err.message);

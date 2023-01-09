@@ -13,9 +13,10 @@ class reviewController {
       let reviewDb;
 
       if (id) reviewDb = await Review.findOne({ _id: id });
-      else if (text)
+      else if (text) {
+        console.log(text, "TEXT");
         reviewDb = await Review.find({ $text: { $search: text } }).limit(10);
-      else if (tags) reviewDb = await Review.find({ tags });
+      } else if (tags) reviewDb = await Review.find({ tags });
       else if (params) reviewDb = await Review.find().sort(params);
       else if (category) {
         const catDb = await Category.findOne({ value: category });

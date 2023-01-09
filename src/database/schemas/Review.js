@@ -40,4 +40,6 @@ const ReviewSchema = new mongoose.Schema({
   },
 });
 
+ReviewSchema.index({ title: "text", text: "text" });
+
 module.exports = mongoose.model("reviews", ReviewSchema);

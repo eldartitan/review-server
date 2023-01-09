@@ -38,13 +38,17 @@ app.use(
   session({
     secret,
     resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl, collectionName: "sessions" }),
+    saveUninitialized: false,
+    // store: MongoStore.create({ mongoUrl, collectionName: "sessions" }),
     cookie: { maxAge: 1000 * 60 * 60 * 24 },
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get("/", (req, res) => {
+  res.send(`Fail authenticate with google ${req.user}`);
+});
 
 app.use("/auth", authRoute);
 app.use("/auth/google", authGoogleRoute);
